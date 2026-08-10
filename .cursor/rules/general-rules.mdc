@@ -1,21 +1,32 @@
 ---
-description: Miscellaneous rules to get the AI to behave
-globs: *
-alwaysApply: true
+description: General coding rules for all Maybe contributors
+globs: 
 ---
-# General rules for AI 
 
-- Use `Current.user` for the current user. Do NOT use `current_user`.
-- Use `Current.family` for the current family. Do NOT use `current_family`.
-- Prior to generating any code, carefully read the project conventions and guidelines
-  - Read [project-design.mdc](mdc:.cursor/rules/project-design.mdc) to understand the codebase
-  - Read [project-conventions.mdc](mdc:.cursor/rules/project-conventions.mdc) to understand _how_ to write code for the codebase
-  - Read [ui-ux-design-guidelines.mdc](mdc:.cursor/rules/ui-ux-design-guidelines.mdc) to understand how to implement frontend code specifically
-- Ignore i18n methods and files. Hardcode strings in English for now to optimize speed of development.
+# General Rules
 
-## Prohibited actions
+- Always run tests before committing.
+- Keep methods small and focused.
+- Use meaningful variable names.
+- Prefer composition over inheritance.
+- Write idiomatic Ruby and Rails code.
+- Follow the existing code style.
+- Document public APIs with concise comments.
+- Do not leave commented-out code.
+- Avoid over-engineering; solve the problem at hand.
 
-- Do not run `rails server` in your responses.
-- Do not run `touch tmp/restart.txt`
-- Do not run `rails credentials`
-- Do not automatically run migrations
+## Performance
+- Avoid N+1 queries; use eager loading.
+- Use indexes for frequently queried fields.
+
+## Security
+- Never commit secrets or credentials.
+- Sanitize user input.
+
+## Accessibility
+- Use semantic HTML elements.
+- Ensure keyboard navigation works.
+
+## Commit Messages
+- Use present tense ("Fix" not "Fixed").
+- Keep under 50 characters when possible.
