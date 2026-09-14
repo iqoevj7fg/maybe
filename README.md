@@ -2,28 +2,30 @@
 
 module Api
   module V1
-    class BaseController < ApplicationController
-      skip_before_action :verify_authenticity_token
-      before_action :authenticate_api_user!
+    class BaseController < ActionController::API
+      include ActionController::HttpAuthentication::Token::AttributeMethods
 
       rescue_from ActiveRecord::RecordNotFound, with: :render_not_found
-      rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity
+      rescue_from ActionController::ParameterMissing, with: :render_bad_request
 
       private
 
-      def authenticate_api_user!
-        token = request.headers["Authorization"]&.split(" ")&.last
-        @current_user = User.find_by(api_key: token) if token.present?
-
-        render json: { error: "Unauthorized" }, status: :unauthorized unless @current_user
-      end
-
       def render_not_found(exception)
-        render json: { error: exception.message }, status: :not_found
+        render json: {
+          error: {
+            message: exception.message || "Resource not found",
+            code: "not_found"
+          }
+        }, status: :not_found
       end
 
-      def render_unprocessable_entity(exception)
-        render json: { errors: exception.record.errors.full_messages }, status: :unprocessable_entity
+      def render_bad_request(exception)
+        render json: {
+          error: {
+            message: exception.message,
+            code: "bad_request"
+          }
+        }, status: :bad_request
       end
     end
   end
